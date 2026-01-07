@@ -1,4 +1,13 @@
 export async function pingBackend() {
-  const res = await fetch("http://localhost:8000/ping");
+  const res = await fetch("http://localhost:5000/ping");
+  return res.json();
+}
+
+export async function computeEigen(matrix: number[][]) {
+  const res = await fetch("http://localhost:5000/eigen", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ matrix })
+  });
   return res.json();
 }

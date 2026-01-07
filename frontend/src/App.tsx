@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { pingBackend, computeEigen } from "./api";
 
