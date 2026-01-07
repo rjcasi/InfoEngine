@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+dist/
+build/
+
+# OS junk
+.DS_Store
+
+# Vite
+*.local
+
+# Logs
+*.log
