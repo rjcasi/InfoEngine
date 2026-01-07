@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import numpy as np
 
 # ---------------------------------------------------------
 # Flask App Initialization
@@ -19,24 +20,17 @@ def ping():
 
 
 # ---------------------------------------------------------
-# Example: Flow Map Endpoint (placeholder)
+# Flow Map Organ — Eigenvalues / Eigenvectors
 # ---------------------------------------------------------
 
 @app.post("/flow/eigen")
 def flow_eigen():
-    """
-    Accepts a matrix from the frontend and returns eigenvalues.
-    This is just a placeholder — you will replace it with your
-    real Flow Map module later.
-    """
     data = request.get_json()
     matrix = data.get("matrix")
 
     if matrix is None:
         return jsonify({"error": "Matrix missing"}), 400
 
-    # Example computation (replace with your math engine)
-    import numpy as np
     A = np.array(matrix)
     vals, vecs = np.linalg.eig(A)
 
