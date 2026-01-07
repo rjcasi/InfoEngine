@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from organs.eigen import eigen_bp
+from organs.nand import nand_bp
+
 import numpy as np
 
 # ---------------------------------------------------------
@@ -8,6 +11,8 @@ import numpy as np
 
 app = Flask(__name__)
 CORS(app)  # allow React frontend to call Flask backend
+app.register_blueprint(eigen_bp)
+app.register_blueprint(nand_bp)
 
 
 # ---------------------------------------------------------
