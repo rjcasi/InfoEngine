@@ -10,6 +10,8 @@ import {
   computePhaseSpace,
   computeCausalSet,
   computeAttentionTensor,
+  runCyber,
+  computeMemory,
 } from "./api";
 
 import { Line } from "react-chartjs-2";
@@ -45,9 +47,14 @@ export default function App() {
   const [phaseSpace, setPhaseSpace] = useState<any | null>(null);
   const [causalSet, setCausalSet] = useState<any | null>(null);
   const [attentionTensor, setAttentionTensor] = useState<any | null>(null);
+  const [cyberResult, setCyberResult] = useState<any | null>(null);
+  const [memoryResult, setMemoryResult] = useState<any | null>(null);
 
   // NAND inputs
   const [nandInputs, setNandInputs] = useState({ a: 0, b: 0 });
+
+  // Cyber organ seed
+  const [cyberSeed, setCyberSeed] = useState<number | null>(null);
 
   // Backend heartbeat
   useEffect(() => {
@@ -143,6 +150,32 @@ export default function App() {
 
     const result = await computeAttentionTensor(payload);
     setAttentionTensor(result);
+  }
+
+  // Cyber organ
+  async function handleCyber() {
+    const result = await runCyber(cyberSeed);
+    setCyberResult(result);
+    setCyberSeed(result.next_seed);
+  }
+
+  // Memory organ
+  async function handleMemory() {
+    if (!spikeResult || !ionChannels || !attentionTensor) {
+      alert("Run Spike Neuron, Ion Channels, and Attention Tensor first.");
+      return;
+    }
+
+    const payload = {
+      V: spikeResult.potentials,
+      K: ionChannels.K,
+      Na: ionChannels.Na,
+      Ca: ionChannels.Ca,
+      attention: attentionTensor.attention,
+    };
+
+    const result = await computeMemory(payload);
+    setMemoryResult(result);
   }
 
   return (
@@ -330,7 +363,7 @@ export default function App() {
       </section>
 
       {/* Causal Set Organ */}
-      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
+      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid "#444" }}>
         <h2>Causal Set Organ</h2>
         <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
           Extracts events and builds a causal partial order from membrane potentials.
@@ -357,6 +390,50 @@ export default function App() {
         {attentionTensor && (
           <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
             {JSON.stringify(attentionTensor, null, 2)}
+          </pre>
+        )}
+      </section>
+
+      {/* Red/Blue Cyber Organ */}
+      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
+        <h2>Red/Blue Cyber Organ</h2>
+        <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
+          Generates fuzzing patterns and evaluates defensive response. Recursive cyber loop.
+        </p>
+
+        <div style={{ marginBottom: "0.5rem" }}>
+          <label>
+            Seed:{" "}
+            <input
+              type="number"
+              value={cyberSeed ?? ""}
+              onChange={(e) => setCyberSeed(Number(e.target.value))}
+              style={{ width: "80px" }}
+            />
+          </label>
+        </div>
+
+        <button onClick={handleCyber}>Run Cyber Round</button>
+
+        {cyberResult && (
+          <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
+            {JSON.stringify(cyberResult, null, 2)}
+          </pre>
+        )}
+      </section>
+
+      {/* Memory Consolidation Organ */}
+      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
+        <h2>Memory Consolidation Organ</h2>
+        <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
+          Compresses biophysical and attentional signals into a stable memory vector.
+        </p>
+
+        <button onClick={handleMemory}>Consolidate Memory</button>
+
+        {memoryResult && (
+          <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
+            {JSON.stringify(memoryResult, null, 2)}
           </pre>
         )}
       </section>

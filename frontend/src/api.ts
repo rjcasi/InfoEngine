@@ -99,3 +99,27 @@ export async function computeAttentionTensor(payload: any) {
   if (!res.ok) throw new Error("Attention tensor organ error");
   return res.json();
 }
+
+// Red/Blue Cyber Organ
+export async function runCyber(seed: number | null) {
+  const res = await fetch("http://localhost:5000/cyber", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ seed }),
+  });
+
+  if (!res.ok) throw new Error("Cyber organ error");
+  return res.json();
+}
+
+// Memory Consolidation Organ
+export async function computeMemory(payload: any) {
+  const res = await fetch("http://localhost:5000/memory", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error("Memory organ error");
+  return res.json();
+}

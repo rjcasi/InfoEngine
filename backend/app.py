@@ -10,6 +10,8 @@ from organs.ion_channels import simulate_ion_channels
 from organs.phase_space import compute_phase_space
 from organs.causal_set import build_causal_set
 from organs.attention_tensor import compute_attention_tensor
+from organs.cyber import cyber_round
+from organs.memory import consolidate_memory
 
 app = Flask(__name__)
 CORS(app)
@@ -116,6 +118,34 @@ def attention_tensor_route():
     events = data["events"]
 
     result = compute_attention_tensor(V, K, Na, Ca, events)
+    return jsonify(result)
+
+
+# ---------------------------------------------------------
+# Red/Blue Cyber Organ
+# ---------------------------------------------------------
+@app.route("/cyber", methods=["POST"])
+def cyber_route():
+    data = request.get_json()
+    seed = data.get("seed")
+    result = cyber_round(seed)
+    return jsonify(result)
+
+
+# ---------------------------------------------------------
+# Memory Consolidation Organ
+# ---------------------------------------------------------
+@app.route("/memory", methods=["POST"])
+def memory_route():
+    data = request.get_json()
+
+    V = data["V"]
+    K = data["K"]
+    Na = data["Na"]
+    Ca = data["Ca"]
+    attention = data["attention"]
+
+    result = consolidate_memory(V, K, Na, Ca, attention)
     return jsonify(result)
 
 
