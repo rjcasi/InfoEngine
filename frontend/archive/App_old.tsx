@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useEffect, useState } from "react";
 import {
   pingBackend,
@@ -6,11 +7,8 @@ import {
   computeNand,
   simulateSpike,
   computePowerSpectrum,
-  simulateIonChannels,
-  computePhaseSpace,
-  computeCausalSet,
-  computeAttentionTensor,
 } from "./api";
+
 
 import { Line } from "react-chartjs-2";
 import {
@@ -41,10 +39,6 @@ export default function App() {
   const [nandResult, setNandResult] = useState<any | null>(null);
   const [spikeResult, setSpikeResult] = useState<any | null>(null);
   const [powerSpectrum, setPowerSpectrum] = useState<any | null>(null);
-  const [ionChannels, setIonChannels] = useState<any | null>(null);
-  const [phaseSpace, setPhaseSpace] = useState<any | null>(null);
-  const [causalSet, setCausalSet] = useState<any | null>(null);
-  const [attentionTensor, setAttentionTensor] = useState<any | null>(null);
 
   // NAND inputs
   const [nandInputs, setNandInputs] = useState({ a: 0, b: 0 });
@@ -98,51 +92,6 @@ export default function App() {
     }
     const spectrum = await computePowerSpectrum(spikeResult.potentials, 1.0);
     setPowerSpectrum(spectrum);
-  }
-
-  // Ion channel organ
-  async function handleIonChannels() {
-    const result = await simulateIonChannels();
-    setIonChannels(result);
-  }
-
-  // Phase-space organ
-  async function handlePhaseSpace() {
-    if (!spikeResult?.potentials) {
-      alert("Run the Spike Neuron first.");
-      return;
-    }
-    const result = await computePhaseSpace(spikeResult.potentials, 1.0);
-    setPhaseSpace(result);
-  }
-
-  // Causal set organ
-  async function handleCausalSet() {
-    if (!spikeResult?.potentials) {
-      alert("Run the Spike Neuron first.");
-      return;
-    }
-    const result = await computeCausalSet(spikeResult.potentials, 0.5);
-    setCausalSet(result);
-  }
-
-  // Attention tensor organ
-  async function handleAttentionTensor() {
-    if (!spikeResult?.potentials || !ionChannels || !causalSet) {
-      alert("Run Spike Neuron, Ion Channels, and Causal Set first.");
-      return;
-    }
-
-    const payload = {
-      V: spikeResult.potentials,
-      K: ionChannels.K,
-      Na: ionChannels.Na,
-      Ca: ionChannels.Ca,
-      events: causalSet.events,
-    };
-
-    const result = await computeAttentionTensor(payload);
-    setAttentionTensor(result);
   }
 
   return (
@@ -254,111 +203,54 @@ export default function App() {
         )}
 
         {powerSpectrum && (
-          <>
-            <pre
-              style={{
-                marginTop: "1rem",
-                background: "#222",
-                padding: "1rem",
-                maxHeight: "200px",
-                overflow: "auto",
-              }}
-            >
-              {JSON.stringify(powerSpectrum, null, 2)}
-            </pre>
+  <>
+    <pre
+      style={{
+        marginTop: "1rem",
+        background: "#222",
+        padding: "1rem",
+        maxHeight: "200px",
+        overflow: "auto",
+      }}
+    >
+      {JSON.stringify(powerSpectrum, null, 2)}
+    </pre>
 
-            <div style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
-              <h3>Power Spectrum Plot</h3>
-              <Line
-                data={{
-                  labels: powerSpectrum.freqs,
-                  datasets: [
-                    {
-                      label: "Power",
-                      data: powerSpectrum.power,
-                      borderColor: "#4fc3f7",
-                      backgroundColor: "rgba(79, 195, 247, 0.2)",
-                      tension: 0.1,
-                      pointRadius: 0,
-                    },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  scales: {
-                    x: { title: { display: true, text: "Frequency" } },
-                    y: { title: { display: true, text: "Power" } },
-                  },
-                  plugins: { legend: { display: false } },
-                }}
-              />
-            </div>
-          </>
-        )}
-      </section>
-
-      {/* Ion Channel Organ */}
-      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
-        <h2>Ion Channel Organ</h2>
-        <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
-          Simulates stochastic K⁺, Na⁺, and Ca²⁺ gating and resulting membrane potential.
-        </p>
-
-        <button onClick={handleIonChannels}>Simulate Ion Channels</button>
-
-        {ionChannels && (
-          <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
-            {JSON.stringify(ionChannels, null, 2)}
-          </pre>
-        )}
-      </section>
-
-      {/* Phase-Space Organ */}
-      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
-        <h2>Phase-Space Organ</h2>
-        <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
-          Computes V vs dV/dt attractor from membrane potentials.
-        </p>
-
-        <button onClick={handlePhaseSpace}>Compute Phase Space</button>
-
-        {phaseSpace && (
-          <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
-            {JSON.stringify(phaseSpace, null, 2)}
-          </pre>
-        )}
-      </section>
-
-      {/* Causal Set Organ */}
-      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
-        <h2>Causal Set Organ</h2>
-        <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
-          Extracts events and builds a causal partial order from membrane potentials.
-        </p>
-
-        <button onClick={handleCausalSet}>Compute Causal Set</button>
-
-        {causalSet && (
-          <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
-            {JSON.stringify(causalSet, null, 2)}
-          </pre>
-        )}
-      </section>
-
-      {/* Attention Tensor Organ */}
-      <section style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #444" }}>
-        <h2>Attention Tensor Organ</h2>
-        <p style={{ fontSize: "0.9rem", color: "#aaa" }}>
-          Computes a biologically inspired attention field from membrane, ion channels, and causal events.
-        </p>
-
-        <button onClick={handleAttentionTensor}>Compute Attention Tensor</button>
-
-        {attentionTensor && (
-          <pre style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
-            {JSON.stringify(attentionTensor, null, 2)}
-          </pre>
-        )}
+    <div style={{ marginTop: "1rem", background: "#222", padding: "1rem" }}>
+      <h3>Power Spectrum Plot</h3>
+      <Line
+        data={{
+          labels: powerSpectrum.freqs,
+          datasets: [
+            {
+              label: "Power",
+              data: powerSpectrum.power,
+              borderColor: "#4fc3f7",
+              backgroundColor: "rgba(79, 195, 247, 0.2)",
+              tension: 0.1,
+              pointRadius: 0,
+            },
+          ],
+        }}
+        options={{
+          responsive: true,
+          scales: {
+            x: {
+              title: { display: true, text: "Frequency" },
+            },
+            y: {
+              title: { display: true, text: "Power" },
+              type: "linear",
+            },
+          },
+          plugins: {
+            legend: { display: false },
+          },
+        }}
+      />
+    </div>
+  </>
+)}
       </section>
     </div>
   );
