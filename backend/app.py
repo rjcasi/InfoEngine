@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from organs.eigen import eigen_bp
 from organs.nand import nand_bp
+from organs.power_spectrum import power_spectrum_bp
+
 
 import numpy as np
 
@@ -13,7 +15,7 @@ app = Flask(__name__)
 CORS(app)  # allow React frontend to call Flask backend
 app.register_blueprint(eigen_bp)
 app.register_blueprint(nand_bp)
-
+app.register_blueprint(power_spectrum_bp)
 
 # ---------------------------------------------------------
 # Health / Connectivity Check
