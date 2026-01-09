@@ -2,24 +2,16 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 import numpy as np
 
-# ---------------------------------------------------------
-# Import organs from new folder structure
-# ---------------------------------------------------------
-
-# Physics organs
-from backend.organs.physics.power_spectrum_organ import PowerSpectrumOrgan
-from backend.organs.physics.laplace_organ import LaplaceOrgan
-from backend.organs.physics.koopman_organ import KoopmanOrgan
-from backend.organs.physics.zeta_gamma_organ import ZetaGammaOrgan
-from backend.organs.physics.free_energy import FreeEnergyOrgan
-
-# Computation organs
+# Import your organs directly
+from backend.organs.physics.power_spectrum import PowerSpectrumOrgan
 from backend.organs.computation.hash import HashOrgan
 from backend.organs.computation.causal_set import CausalSetOrgan
-
-# Mind organs
+from backend.organs.physics.zeta_gamma_organ import ZetaGammaOrgan
+from backend.organs.physics.koopman_organ import KoopmanOrgan
 from backend.organs.mind.self_reference_organ import SelfReferenceOrgan
 from backend.organs.mind.consciousness_organ import ConsciousnessOrgan
+from backend.organs.physics.free_energy import FreeEnergyOrgan
+from backend.organs.physics.laplace_organ import LaplaceOrgan
 
 router = APIRouter()
 
@@ -36,7 +28,7 @@ class SignalPayload(BaseModel):
 # Power Spectrum Organ
 # ---------------------------------------------------------
 
-@router.post("/power_spectrum/analyze")
+@router.post("/organs/power_spectrum/analyze")
 def analyze_power_spectrum(payload: SignalPayload):
     organ = PowerSpectrumOrgan(sample_rate=payload.sample_rate)
     return organ.analyze(np.array(payload.signal))
@@ -46,7 +38,7 @@ def analyze_power_spectrum(payload: SignalPayload):
 # Hash Organ
 # ---------------------------------------------------------
 
-@router.post("/hash/analyze")
+@router.post("/organs/hash/analyze")
 def analyze_hash(payload: SignalPayload):
     organ = HashOrgan()
     return organ.analyze(np.array(payload.signal))
@@ -56,7 +48,7 @@ def analyze_hash(payload: SignalPayload):
 # Causal Set Organ
 # ---------------------------------------------------------
 
-@router.post("/causal_set/analyze")
+@router.post("/organs/causal_set/analyze")
 def analyze_causal_set(payload: SignalPayload):
     organ = CausalSetOrgan()
     return organ.analyze(np.array(payload.signal))
@@ -66,7 +58,7 @@ def analyze_causal_set(payload: SignalPayload):
 # Zeta-Gamma Organ
 # ---------------------------------------------------------
 
-@router.post("/zeta_gamma/analyze")
+@router.post("/organs/zeta_gamma/analyze")
 def analyze_zeta_gamma(payload: SignalPayload):
     organ = ZetaGammaOrgan()
     return organ.analyze(np.array(payload.signal))
@@ -76,7 +68,7 @@ def analyze_zeta_gamma(payload: SignalPayload):
 # Koopman Organ
 # ---------------------------------------------------------
 
-@router.post("/koopman/analyze")
+@router.post("/organs/koopman/analyze")
 def analyze_koopman(payload: SignalPayload):
     organ = KoopmanOrgan()
     return organ.analyze(np.array(payload.signal))
@@ -86,7 +78,7 @@ def analyze_koopman(payload: SignalPayload):
 # Self-Reference Organ
 # ---------------------------------------------------------
 
-@router.post("/self_reference/analyze")
+@router.post("/organs/self_reference/analyze")
 def analyze_self_reference(payload: SignalPayload):
     organ = SelfReferenceOrgan()
     return organ.analyze(np.array(payload.signal))
@@ -96,17 +88,17 @@ def analyze_self_reference(payload: SignalPayload):
 # Free Energy Organ
 # ---------------------------------------------------------
 
-@router.post("/free_energy/analyze")
+@router.post("/organs/free_energy/analyze")
 def analyze_free_energy(payload: SignalPayload):
     organ = FreeEnergyOrgan()
     return organ.analyze(np.array(payload.signal))
 
 
 # ---------------------------------------------------------
-# Consciousness Organ
+# Consciousness Organ (meta-organ)
 # ---------------------------------------------------------
 
-@router.post("/consciousness/analyze")
+@router.post("/organs/consciousness/analyze")
 def analyze_consciousness(payload: SignalPayload):
     organ = ConsciousnessOrgan()
     return organ.analyze(np.array(payload.signal))
@@ -122,7 +114,7 @@ class LaplacePayload(BaseModel):
     method: str = "prony"   # "prony", "matrix_pencil", "burg", "continuous_time"
     order: int = 10
 
-@router.post("/laplace/analyze")
+@router.post("/organs/laplace/analyze")
 def analyze_laplace(payload: LaplacePayload):
     organ = LaplaceOrgan(
         sample_rate=payload.sample_rate,
