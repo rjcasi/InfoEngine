@@ -1,24 +1,18 @@
 import React, { useState } from "react";
+
 import CausalSetSpikePanel from "./panels/CausalSetSpikePanel";
 import CausalSetSyntheticPanel from "./panels/CausalSetSyntheticPanel";
+import HashPanel from "./panels/HashPanel";
 
 export default function App() {
   const [panel, setPanel] = useState("spike");
 
   return (
-    <div
-      style={{
-        padding: "1rem",
-        fontFamily: "sans-serif",
-        background: "#000",
-        color: "#eee",
-        minHeight: "100vh"
-      }}
-    >
-      <h1 style={{ marginBottom: "1rem" }}>InfoEngine Cockpit</h1>
+    <div style={{ padding: "1rem", color: "#eee", background: "#111", minHeight: "100vh" }}>
+      <h1>InfoEngine Cockpit</h1>
 
       {/* Panel Switcher */}
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem" }}>
         <button
           onClick={() => setPanel("spike")}
           style={{
@@ -29,7 +23,7 @@ export default function App() {
             cursor: "pointer"
           }}
         >
-          Causal Set (Spike)
+          Spike Panel
         </button>
 
         <button
@@ -42,13 +36,27 @@ export default function App() {
             cursor: "pointer"
           }}
         >
-          Causal Graph (Synthetic)
+          Synthetic Causal Graph
+        </button>
+
+        <button
+          onClick={() => setPanel("hash")}
+          style={{
+            padding: "0.5rem 1rem",
+            background: panel === "hash" ? "#333" : "#111",
+            border: "1px solid #444",
+            color: "#eee",
+            cursor: "pointer"
+          }}
+        >
+          Hash Organ
         </button>
       </div>
 
-      {/* Render Selected Panel */}
+      {/* Panel Renderer */}
       {panel === "spike" && <CausalSetSpikePanel />}
       {panel === "synthetic" && <CausalSetSyntheticPanel />}
+      {panel === "hash" && <HashPanel />}
     </div>
   );
 }

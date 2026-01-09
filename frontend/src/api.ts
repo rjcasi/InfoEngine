@@ -1,14 +1,17 @@
 // frontend/src/api.ts
 
+// Your Codespace backend URL
+const BASE = "https://super-duper-capybara-wpvjwxxprw9h9gr5-5000.app.github.dev";
+
 // Backend heartbeat
 export async function pingBackend() {
-  const res = await fetch("http://localhost:5000/");
+  const res = await fetch(`${BASE}/`);
   return res.json();
 }
 
 // Eigen Organ
 export async function computeEigen(matrix: number[][]) {
-  const res = await fetch("http://localhost:5000/eigen", {
+  const res = await fetch(`${BASE}/eigen`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ matrix }),
@@ -20,7 +23,7 @@ export async function computeEigen(matrix: number[][]) {
 
 // NAND Organ
 export async function computeNand(a: number, b: number) {
-  const res = await fetch("http://localhost:5000/nand", {
+  const res = await fetch(`${BASE}/nand`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ a, b }),
@@ -32,7 +35,7 @@ export async function computeNand(a: number, b: number) {
 
 // Spike Neuron Organ
 export async function simulateSpike(inputs: number[]) {
-  const res = await fetch("http://localhost:5000/spike", {
+  const res = await fetch(`${BASE}/spike`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ inputs }),
@@ -47,7 +50,7 @@ export async function computePowerSpectrum(
   potentials: number[],
   dt: number = 1.0
 ) {
-  const res = await fetch("http://localhost:5000/power-spectrum", {
+  const res = await fetch(`${BASE}/power-spectrum`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ potentials, dt }),
@@ -59,14 +62,14 @@ export async function computePowerSpectrum(
 
 // Ion Channel Organ
 export async function simulateIonChannels() {
-  const res = await fetch("http://localhost:5000/ion-channels");
+  const res = await fetch(`${BASE}/ion-channels`);
   if (!res.ok) throw new Error("Ion channel organ error");
   return res.json();
 }
 
 // Phase-Space Organ
 export async function computePhaseSpace(V: number[], dt: number = 0.1) {
-  const res = await fetch("http://localhost:5000/phase-space", {
+  const res = await fetch(`${BASE}/phase-space`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ V, dt }),
@@ -78,7 +81,7 @@ export async function computePhaseSpace(V: number[], dt: number = 0.1) {
 
 // Causal Set Organ
 export async function computeCausalSet(V: number[], threshold: number = 0.5) {
-  const res = await fetch("http://localhost:5000/causal-set", {
+  const res = await fetch(`${BASE}/causal-set`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ V, threshold }),
@@ -90,7 +93,7 @@ export async function computeCausalSet(V: number[], threshold: number = 0.5) {
 
 // Attention Tensor Organ
 export async function computeAttentionTensor(payload: any) {
-  const res = await fetch("http://localhost:5000/attention-tensor", {
+  const res = await fetch(`${BASE}/attention-tensor`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -102,7 +105,7 @@ export async function computeAttentionTensor(payload: any) {
 
 // Red/Blue Cyber Organ
 export async function runCyber(seed: number | null) {
-  const res = await fetch("http://localhost:5000/cyber", {
+  const res = await fetch(`${BASE}/cyber`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ seed }),
@@ -114,7 +117,7 @@ export async function runCyber(seed: number | null) {
 
 // Memory Consolidation Organ
 export async function computeMemory(payload: any) {
-  const res = await fetch("http://localhost:5000/memory", {
+  const res = await fetch(`${BASE}/memory`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -122,4 +125,4 @@ export async function computeMemory(payload: any) {
 
   if (!res.ok) throw new Error("Memory organ error");
   return res.json();
-}
+} 
