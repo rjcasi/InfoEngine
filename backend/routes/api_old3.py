@@ -130,27 +130,3 @@ def analyze_laplace(payload: LaplacePayload):
         order=payload.order
     )
     return organ.analyze(np.array(payload.signal))
-
-
-# ---------------------------------------------------------
-# PhysicsCore endpoint (ADD THIS)
-# ---------------------------------------------------------
-
-from backend.core.physics_core import PhysicsCore
-
-physics_core = PhysicsCore()
-
-class PhysicsEvolveRequest(BaseModel):
-    x0: float
-    p0: float
-    H_name: str = "harmonic"
-    params: dict | None = None
-
-@router.post("/physics/evolve")
-def physics_evolve(req: PhysicsEvolveRequest):
-    return physics_core.evolve(
-        x0=req.x0,
-        p0=req.p0,
-        H_name=req.H_name,
-        params=req.params,
-    )
