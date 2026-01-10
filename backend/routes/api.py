@@ -21,6 +21,14 @@ from backend.organs.computation.causal_set import CausalSetOrgan
 from backend.organs.mind.self_reference_organ import SelfReferenceOrgan
 from backend.organs.mind.consciousness_organ import ConsciousnessOrgan
 
+# Cybersecurity organs (NEW)
+from backend.organs.cybersecurity.bloodhound_red_organ import BloodHoundRedOrgan
+from backend.organs.cybersecurity.bloodhound_blue_organ import BloodHoundBlueOrgan
+from backend.organs.cybersecurity.cyber_origin_organ import CyberOriginOrgan
+from backend.organs.cybersecurity.cors_organ import CORSOrgan
+from backend.organs.cybersecurity.xss_organ import XSSOrgan
+
+
 router = APIRouter()
 
 # ---------------------------------------------------------
@@ -133,7 +141,7 @@ def analyze_laplace(payload: LaplacePayload):
 
 
 # ---------------------------------------------------------
-# PhysicsCore endpoint (ADD THIS)
+# PhysicsCore endpoint
 # ---------------------------------------------------------
 
 from backend.core.physics_core import PhysicsCore
@@ -154,3 +162,62 @@ def physics_evolve(req: PhysicsEvolveRequest):
         H_name=req.H_name,
         params=req.params,
     )
+
+
+# ---------------------------------------------------------
+# Cybersecurity Organ Cluster (NEW)
+# ---------------------------------------------------------
+
+# ---- BloodHound Input Models ----
+
+class BloodHoundInput(BaseModel):
+    nodes: list
+    edges: list
+    high_value_nodes: list = []
+
+
+@router.post("/cyber/bloodhound/red")
+def cyber_bloodhound_red(payload: BloodHoundInput):
+    organ = BloodHoundRedOrgan()
+    return organ.process(payload.model_dump())
+
+
+@router.post("/cyber/bloodhound/blue")
+def cyber_bloodhound_blue(payload: BloodHoundInput):
+    organ = BloodHoundBlueOrgan()
+    return organ.process(payload.model_dump())
+
+
+# ---- Cyber Origin Organ ----
+
+class CyberOriginInput(BaseModel):
+    origins: list
+    cors_rules: list = []
+    xss_sinks: list = []
+
+@router.post("/cyber/origin")
+def cyber_origin(payload: CyberOriginInput):
+    organ = CyberOriginOrgan()
+    return organ.process(payload.model_dump())
+
+
+# ---- CORS Organ ----
+
+class CORSInput(BaseModel):
+    rules: list
+
+@router.post("/cyber/cors")
+def cyber_cors(payload: CORSInput):
+    organ = CORSOrgan()
+    return organ.process(payload.model_dump())
+
+
+# ---- XSS Organ ----
+
+class XSSInput(BaseModel):
+    sinks: list
+
+@router.post("/cyber/xss")
+def cyber_xss(payload: XSSInput):
+    organ = XSSOrgan()
+    return organ.process(payload.model_dump())
