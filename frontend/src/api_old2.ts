@@ -3,17 +3,13 @@
 // Your Codespace backend URL
 const BASE = "https://super-duper-capybara-wpvjwxxprw9h9gr5-5000.app.github.dev";
 
-// ---------------------------------------------------------
 // Backend heartbeat
-// ---------------------------------------------------------
 export async function pingBackend() {
   const res = await fetch(`${BASE}/`);
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Eigen Organ
-// ---------------------------------------------------------
 export async function computeEigen(matrix: number[][]) {
   const res = await fetch(`${BASE}/eigen`, {
     method: "POST",
@@ -25,9 +21,7 @@ export async function computeEigen(matrix: number[][]) {
   return res.json();
 }
 
-// ---------------------------------------------------------
 // NAND Organ
-// ---------------------------------------------------------
 export async function computeNand(a: number, b: number) {
   const res = await fetch(`${BASE}/nand`, {
     method: "POST",
@@ -39,9 +33,7 @@ export async function computeNand(a: number, b: number) {
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Spike Neuron Organ
-// ---------------------------------------------------------
 export async function simulateSpike(inputs: number[]) {
   const res = await fetch(`${BASE}/spike`, {
     method: "POST",
@@ -53,9 +45,7 @@ export async function simulateSpike(inputs: number[]) {
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Power Spectrum Organ
-// ---------------------------------------------------------
 export async function computePowerSpectrum(
   potentials: number[],
   dt: number = 1.0
@@ -70,18 +60,14 @@ export async function computePowerSpectrum(
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Ion Channel Organ
-// ---------------------------------------------------------
 export async function simulateIonChannels() {
   const res = await fetch(`${BASE}/ion-channels`);
   if (!res.ok) throw new Error("Ion channel organ error");
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Phase-Space Organ
-// ---------------------------------------------------------
 export async function computePhaseSpace(V: number[], dt: number = 0.1) {
   const res = await fetch(`${BASE}/phase-space`, {
     method: "POST",
@@ -93,9 +79,7 @@ export async function computePhaseSpace(V: number[], dt: number = 0.1) {
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Causal Set Organ
-// ---------------------------------------------------------
 export async function computeCausalSet(V: number[], threshold: number = 0.5) {
   const res = await fetch(`${BASE}/causal-set`, {
     method: "POST",
@@ -107,9 +91,7 @@ export async function computeCausalSet(V: number[], threshold: number = 0.5) {
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Attention Tensor Organ
-// ---------------------------------------------------------
 export async function computeAttentionTensor(payload: any) {
   const res = await fetch(`${BASE}/attention-tensor`, {
     method: "POST",
@@ -121,9 +103,7 @@ export async function computeAttentionTensor(payload: any) {
   return res.json();
 }
 
-// ---------------------------------------------------------
-// Red/Blue Cyber Organ (old)
-// ---------------------------------------------------------
+// Red/Blue Cyber Organ
 export async function runCyber(seed: number | null) {
   const res = await fetch(`${BASE}/cyber`, {
     method: "POST",
@@ -135,9 +115,7 @@ export async function runCyber(seed: number | null) {
   return res.json();
 }
 
-// ---------------------------------------------------------
 // Memory Consolidation Organ
-// ---------------------------------------------------------
 export async function computeMemory(payload: any) {
   const res = await fetch(`${BASE}/memory`, {
     method: "POST",
@@ -147,68 +125,4 @@ export async function computeMemory(payload: any) {
 
   if (!res.ok) throw new Error("Memory organ error");
   return res.json();
-}
-
-// ---------------------------------------------------------
-// CYBERSECURITY ORGAN CLUSTER (NEW)
-// ---------------------------------------------------------
-
-// ---- BloodHound Red ----
-export async function runBloodHoundRed(payload: any) {
-  const res = await fetch(`${BASE}/cyber/bloodhound/red`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error("BloodHound Red organ error");
-  return res.json();
-}
-
-// ---- BloodHound Blue ----
-export async function runBloodHoundBlue(payload: any) {
-  const res = await fetch(`${BASE}/cyber/bloodhound/blue`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error("BloodHound Blue organ error");
-  return res.json();
-}
-
-// ---- Cyber Origin ----
-export async function runCyberOrigin(payload: any) {
-  const res = await fetch(`${BASE}/cyber/origin`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error("Cyber Origin organ error");
-  return res.json();
-}
-
-// ---- CORS Organ ----
-export async function runCORS(payload: any) {
-  const res = await fetch(`${BASE}/cyber/cors`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error("CORS organ error");
-  return res.json();
-}
-
-// ---- XSS Organ ----
-export async function runXSS(payload: any) {
-  const res = await fetch(`${BASE}/cyber/xss`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error("XSS organ error");
-  return res.json();
-}
+} 
