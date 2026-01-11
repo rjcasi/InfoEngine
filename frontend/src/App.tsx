@@ -9,6 +9,9 @@ import { CyberOriginPanel } from "./panels/Cybersecurity/CyberOriginPanel";
 import { CORSPanel } from "./panels/Cybersecurity/CORSPanel";
 import { XSSPanel } from "./panels/Cybersecurity/XSSPanel";
 
+// NEW — Spiral Panel
+import { BloodhoundSpiralPanel } from "./panels/BloodhoundSpiralPanel";
+
 // Computation
 import CausalSetSpikePanel from "./panels/CausalSetSpikePanel";
 import CausalSetSyntheticPanel from "./panels/CausalSetSyntheticPanel";
@@ -68,6 +71,7 @@ export default function App() {
         {/* Cybersecurity */}
         {panel === "bh_red" && <BloodHoundRedPanel />}
         {panel === "bh_blue" && <BloodHoundBluePanel />}
+        {panel === "bh_spiral" && <BloodhoundSpiralPanel />}
         {panel === "origin" && <CyberOriginPanel />}
         {panel === "cors" && <CORSPanel />}
         {panel === "xss" && <XSSPanel />}
